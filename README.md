@@ -26,7 +26,10 @@ by default `sorted` is `false`.
 
 ```javascript
 // Data is sorted from small to big
-var data = summary([-1, 0, 1], true); 
+var data = summary([-1, 0, 1], true);
+
+// Data is sorted, but summary dosn't know. Works fine just a bit slower.
+var data = summary([-1, 0, 1] /*, default false */);
 
 // Data is sorted in reverse order
 var data = summary([1, 0, -1] /*, default false */);
