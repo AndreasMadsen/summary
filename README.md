@@ -59,6 +59,9 @@ data.median(); // Returns the median
 data.variance(); // Returns the variance
 
 data.sd(); // Returns the standard deviation
+
+data.max(); // Returns the maximum value
+data.min(); // Returns the minimum value
 ```
 
 ##License

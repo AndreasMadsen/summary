@@ -11,17 +11,19 @@ function Summary(data, sorted) {
   this._length = data.length;
 
   this._cache_sum = null;
-  this._cache_mode = null; 
+  this._cache_mode = null;
   this._cache_mean = null;
   this._cache_quartiles = {};
   this._cache_variance = null;
   this._cache_sd = null;
+  this._cache_max = null;
+  this._cache_min = null;
 }
 module.exports = Summary;
 
 //
 // Not all values are in lazy calculated since that wouldn't do any good
-// 
+//
 Summary.prototype.sort = function() {
   if (this._sorted === false) {
     this._sorted = true;
@@ -115,7 +117,7 @@ Summary.prototype.quartile = function (prob) {
 };
 
 Summary.prototype.median = function () {
-  return this.quartile(0.5);  
+  return this.quartile(0.5);
 };
 
 Summary.prototype.variance = function () {
@@ -125,7 +127,7 @@ Summary.prototype.variance = function () {
     for (var i = 0; i < this._length; i++) {
       sqsum += (this._data[i] - mean) * (this._data[i] - mean);
     }
-  
+
     this._cache_variance = sqsum / (this._length - 1);
   }
 
@@ -138,4 +140,20 @@ Summary.prototype.sd = function () {
   }
 
   return this._cache_sd;
+};
+
+Summary.prototype.max = function () {
+  if (this._cache_max === null) {
+    this._cache_max = this.sort()[this._length - 1];
+  }
+
+  return this._cache_max;
+};
+
+Summary.prototype.min = function () {
+  if (this._cache_min === null) {
+    this._cache_min = this.sort()[0];
+  }
+
+  return this._cache_min;
 };

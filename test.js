@@ -26,7 +26,7 @@ test('testing size method', function (t) {
     summary([1, 10]).size(),
     2
   );
-  
+
   t.end();
 });
 
@@ -35,7 +35,7 @@ test('testing sum method', function (t) {
     summary([1, 10]).sum(),
     11
   );
-  
+
   t.end();
 });
 
@@ -107,6 +107,18 @@ test('testing variance method', function (t) {
 
 test('testing sd method', function (t) {
   t.equal(summary([-2, -1, 0, 1, 2]).sd(), Math.sqrt(2.5));
+
+  t.end();
+});
+
+test('testing max method', function (t) {
+  t.equal(summary([6, 10, 2, 5]).max(), 10);
+
+  t.end();
+});
+
+test('testing min method', function (t) {
+  t.equal(summary([6, 10, 2, 5]).min(), 2);
 
   t.end();
 });
