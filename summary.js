@@ -1,8 +1,13 @@
 
+var array_types = [
+    Array, Int8Array, Uint8Array, Int16Array, Uint16Array,
+    Int32Array, Uint32Array, Float32Array, Float64Array
+];
+
 function Summary(data, sorted) {
   if (!(this instanceof Summary)) return new Summary(data, sorted);
 
-  if (!Array.isArray(data)) {
+  if (array_types.indexOf(data.constructor) === -1) {
     throw TypeError('data must be an array');
   }
 

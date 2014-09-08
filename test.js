@@ -122,3 +122,9 @@ test('testing min method', function (t) {
 
   t.end();
 });
+
+test('typed array', function (t) {
+  t.equal(summary(new Int8Array([2, 4])).mean(), 3);
+
+  t.end();
+});
