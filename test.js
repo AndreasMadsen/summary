@@ -2,21 +2,35 @@
 var test = require('tap').test;
 var summary = require('./summary.js');
 
-test('testing sort method', function (t) {
+test('testing data method', function (t) {
   t.deepEqual(
-    summary([2, 3, 7, -2, 0, 1, 1], true).sort(),
+    summary([2, 3, 7, -2, 0, 1, 1]).data(),
     [2, 3, 7, -2, 0, 1, 1]
   );
 
-  t.deepEqual(
-    summary([2, 3, 7, -2, 0, 1, 1], false).sort(),
-    [-2, 0, 1, 1, 2, 3, 7]
-  );
+  t.end();
+});
+
+test('testing sort method', function (t) {
+  const data = [2, 3, 7, -2, 0, 1, 1]
 
   t.deepEqual(
-    summary([2, 3, 7, -2, 0, 1, 1]).sort(),
+    summary(data, true).sort(),
+    [2, 3, 7, -2, 0, 1, 1]
+  );
+  t.deepEqual(data, [2, 3, 7, -2, 0, 1, 1], 'data shouldn\'t mutate');
+
+  t.deepEqual(
+    summary(data, false).sort(),
     [-2, 0, 1, 1, 2, 3, 7]
   );
+  t.deepEqual(data, [2, 3, 7, -2, 0, 1, 1], 'data shouldn\'t mutate');
+
+  t.deepEqual(
+    summary(data).sort(),
+    [-2, 0, 1, 1, 2, 3, 7]
+  );
+  t.deepEqual(data, [2, 3, 7, -2, 0, 1, 1], 'data shouldn\'t mutate');
 
   t.end();
 });

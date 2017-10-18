@@ -1,4 +1,4 @@
-#summary
+# summary
 
 > Takes an array of numbers and calculates some descriptive statistics
 
@@ -42,6 +42,8 @@ The data object has the following metods, note that almost all values is lazy
 calculated and then cached.
 
 ```javascript
+data.data(); // Returns the original array
+
 data.sort(); // Returns the sorted array
 
 data.size(); // Returns the data length
@@ -64,7 +66,7 @@ data.max(); // Returns the maximum value
 data.min(); // Returns the minimum value
 ```
 
-##License
+## License
 
 **The software is license under "MIT"**
 

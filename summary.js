@@ -12,7 +12,7 @@ function Summary(data, sorted) {
   }
 
   this._data = data;
-  this._sorted = !!sorted;
+  this._sorted = sorted ? data : null;
   this._length = data.length;
 
   this._cache_sum = null;
@@ -29,13 +29,16 @@ module.exports = Summary;
 //
 // Not all values are in lazy calculated since that wouldn't do any good
 //
+Summary.prototype.data = function() {
+  return this._data;
+};
+
 Summary.prototype.sort = function() {
-  if (this._sorted === false) {
-    this._sorted = true;
-    this._data = this._data.sort(function (a, b) { return a - b; });
+  if (this._sorted === null) {
+    this._sorted = this._data.slice(0).sort(function (a, b) { return a - b; });
   }
 
-  return this._data;
+  return this._sorted;
 };
 
 Summary.prototype.size = function () {
