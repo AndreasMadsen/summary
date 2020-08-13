@@ -1,13 +1,13 @@
+'use strict';
 
-var array_types = [
-    Array, Int8Array, Uint8Array, Int16Array, Uint16Array,
-    Int32Array, Uint32Array, Float32Array, Float64Array
-];
+function isArray(x) {
+  return Array.isArray(x) || ArrayBuffer.isView(x) && !(x instanceof DataView);
+}
 
 function Summary(data, sorted) {
   if (!(this instanceof Summary)) return new Summary(data, sorted);
 
-  if (array_types.indexOf(data.constructor) === -1) {
+  if (!isArray(data)) {
     throw TypeError('data must be an array');
   }
 
@@ -50,8 +50,8 @@ Summary.prototype.size = function () {
 //
 Summary.prototype.sum = function () {
   if (this._cache_sum === null) {
-    var sum = 0;
-    for (var i = 0; i < this._length; i++) sum += this._data[i];
+    let sum = 0;
+    for (let i = 0; i < this._length; i++) sum += this._data[i];
     this._cache_sum = sum;
   }
 
@@ -60,15 +60,15 @@ Summary.prototype.sum = function () {
 
 Summary.prototype.mode = function () {
   if (this._cache_mode === null) {
-    var data = this.sort();
+    const data = this.sort();
 
-    var modeValue = NaN;
-    var modeCount = 0;
-    var currValue = data[0];
-    var currCount = 1;
+    let modeValue = NaN;
+    let modeCount = 0;
+    let currValue = data[0];
+    let currCount = 1;
 
     // Count the amount of repeat and update mode variables
-    for (var i = 1; i < this._length; i++) {
+    for (let i = 1; i < this._length; i++) {
       if (data[i] === currValue) {
         currCount += 1;
       } else {
@@ -96,7 +96,12 @@ Summary.prototype.mode = function () {
 
 Summary.prototype.mean = function () {
   if (this._cache_mean === null) {
-    this._cache_mean = this.sum() / this._length;
+    // Numerically stable mean algorithm
+    let mean = 0;
+    for (let i = 0; i < this._length; i++) {
+        mean += (this._data[i] - mean) / (i+1);
+    }
+    this._cache_mean = mean;
   }
 
   return this._cache_mean;
@@ -104,9 +109,9 @@ Summary.prototype.mean = function () {
 
 Summary.prototype.quartile = function (prob) {
   if (!this._cache_quartiles.hasOwnProperty(prob)) {
-    var data = this.sort();
-    var product = prob * this.size();
-    var ceil = Math.ceil(product);
+    const data = this.sort();
+    const product = prob * this.size();
+    const ceil = Math.ceil(product);
 
     if (ceil === product) {
       if (ceil === 0) {
@@ -130,13 +135,17 @@ Summary.prototype.median = function () {
 
 Summary.prototype.variance = function () {
   if (this._cache_variance === null) {
-    var mean = this.mean();
-    var sqsum = 0;
-    for (var i = 0; i < this._length; i++) {
-      sqsum += (this._data[i] - mean) * (this._data[i] - mean);
+    // Numerically stable variance algorithm
+    const mean = this.mean();
+    let biasedVariance = 0;
+    for (let i = 0; i < this._length; i++) {
+      const diff = this._data[i] - mean;
+      biasedVariance += (diff * diff - biasedVariance) / (i+1);
     }
 
-    this._cache_variance = sqsum / (this._length - 1);
+    // Debias the variance
+    const debiasTerm = ((this._length) / (this._length - 1));
+    this._cache_variance = biasedVariance * debiasTerm;
   }
 
   return this._cache_variance;
