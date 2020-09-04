@@ -62,6 +62,15 @@ test('testing sum method', function (t) {
   t.end();
 });
 
+test('testing sum for variable lengths', function (t) {
+  const data = [];
+  for (let i = 0; i < 256; i++) {
+    data.push(i);
+    t.equal(summary(data).sum(), (i**2 + i) / 2);
+  }
+  t.end();
+});
+
 test('testing sum method when cached', function (t) {
   const s = summary([1, 10]);
   t.equal(s.sum(), 11);

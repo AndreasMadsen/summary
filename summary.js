@@ -50,11 +50,24 @@ Summary.prototype.size = function () {
 //
 Summary.prototype.sum = function () {
   if (this._cache_sum === null) {
-    let sum = 0;
-    for (let i = 0; i < this._length; i++) sum += this._data[i];
-    this._cache_sum = sum;
-  }
+    // Numerically stable sum
+    // https://en.m.wikipedia.org/wiki/Pairwise_summation
+    const partials = [];
+    for (let i = 0; i < this._length; i++) {
+      partials.push(this._data[i]);
+      for (let j = i; j % 2 == 1; j = j >> 1) {
+        const p = partials.pop();
+        const q = partials.pop();
+        partials.push(p + q);
+      }
+    }
 
+    let total = 0.0;
+    for (let i = 0; i < partials.length; i++) {
+      total += partials[i];
+    }
+    this._cache_sum = total;
+  }
   return this._cache_sum;
 };
 
