@@ -28,7 +28,7 @@ by default `sorted` is `false`.
 // Data is sorted from small to big
 var data = summary([-1, 0, 1], true);
 
-// Data is sorted, but summary dosn't know. Works fine just a bit slower.
+// Data is sorted, but summary doesn't know. Works fine just a bit slower.
 var data = summary([-1, 0, 1] /*, default false */);
 
 // Data is sorted in reverse order
@@ -38,7 +38,7 @@ var data = summary([1, 0, -1] /*, default false */);
 var data = summary([0, 1, -1] /*, default false */);
 ```
 
-The data object has the following metods, note that almost all values is lazy
+The data object has the following methods, note that almost all values is lazy
 calculated and then cached.
 
 ```javascript
